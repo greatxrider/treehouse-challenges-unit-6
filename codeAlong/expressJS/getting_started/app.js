@@ -7,18 +7,15 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const colors = [
-    'red',
-    'orange',
-    'yellow',
-    'green',
-    'blue'
-];
-
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
-    res.render('index');
+    const name = req.cookies.username;
+    if (name) {
+        res.render('index', { name });
+    } else {
+        res.redirect('/hello');
+    }
 });
 
 app.get('/cards', (req, res) => {
@@ -29,16 +26,36 @@ app.get('/cards', (req, res) => {
 });
 
 app.get('/hello', (req, res) => {
-    res.render('hello', { name: req.cookies.username });
+    const name = req.cookies.username;
+    if (name) {
+        res.redirect('/');
+    } else {
+        res.render('hello');
+    }
 })
 
 app.post('/hello', (req, res) => {
     // console.dir(req.body);
     // res.render('hello');
     // res.json(req.body);
+    // res.render('hello', { name: req.body.username });
+    // console.dir(req.body);
     res.cookie('username', req.body.username);
-    res.render('hello', { name: req.body.username });
-    console.dir(req.body);
+    res.redirect('/');
+});
+
+app.get('/goodbye', (req, res) => {
+    res.redirect('/hello');
+})
+
+app.post('/goodbye', (req, res) => {
+    const name = req.cookies.username;
+    if (name) {
+        res.clearCookie('username');
+        res.redirect('/hello');
+    } else {
+        res.redirect('/hello');
+    }
 });
 
 app.listen(3000, () => {
