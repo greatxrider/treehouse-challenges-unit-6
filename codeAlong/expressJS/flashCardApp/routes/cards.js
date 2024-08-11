@@ -3,7 +3,7 @@ const router = express.Router();
 const { data } = require('../data/flashcardData.json');
 const { cards } = data;
 
-function getRandomIndex(array) {
+const getRandomIndex = (array) => {
     if (array.length === 0) {
         throw new Error("Array is empty");
     }
