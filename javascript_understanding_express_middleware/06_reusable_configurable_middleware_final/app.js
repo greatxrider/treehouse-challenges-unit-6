@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(multiply({by: 10}));
+app.use(multiply({ by: 10 }));
 
 app.use('/', routes);
 
@@ -49,6 +49,5 @@ app.use((err, req, res, next) => {
     error: {}
   });
 });
-
 
 module.exports = app;

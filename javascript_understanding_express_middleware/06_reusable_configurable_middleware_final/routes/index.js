@@ -9,5 +9,4 @@ router.post('/', (req, res, next) => {
   res.render('index', { multiplied: req.multiplied });
 });
 
-
 module.exports = router;
