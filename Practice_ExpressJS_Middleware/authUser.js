@@ -1,4 +1,5 @@
 // 1. Import the users array from data.json
+const data = require('./data.json');
 // 2. Create and export a function
 // 3. Provide the three parameters that middleware can utilize
 // 4-a. Check if the request object has a query named username
@@ -10,3 +11,19 @@
 //          middleware function in the stack
 //     5-c. If it does not, set the response's status to 401 and
 //          send a string asking for a username.
+module.exports = (req, res, next) => {
+    const usernameQuery = req.query.username;
+
+    if (!usernameQuery) {
+        return res.redirect('/forbidden');
+    }
+
+    const user = data.users.find(user => user.name.toLowerCase() === usernameQuery.toLowerCase());
+
+    if (user) {
+        req.currentUser = user.name;
+        return next();
+    } else {
+        res.status(401).send('Please provide a valid username.');
+    }
+};
